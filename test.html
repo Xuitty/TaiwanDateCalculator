@@ -4,96 +4,43 @@
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>Document</title>
+        <script src="./taiwanDateCalculator.js"></script>
     </head>
     <body>
         <div>
-            <span>日期: </span><input type="text" id="date" value="1101231" />
+            <span>日期: </span
+            ><select id="rule">
+                <option value="roc" label="民國"></option>
+                <option value="ad" label="西元"></option>
+            </select>
+            <input type="text" id="date" value="1101231" /> 轉換
+            <input type="checkbox" id="convert" />
         </div>
         <br />
         <div>
             <span>變數: </span><input type="text" id="parameter" value="+5" />
         </div>
         <br />
-        <div>
-            <span>結果: </span><input type="text" id="dateResult" disabled />
-        </div>
+        <div><span>結果: </span><input type="text" id="dateResult" /></div>
         <br />
         <input id="calculate" type="button" value="計算" />
 
         <script>
             const calBtn = document.getElementById("calculate");
+            const convertBtn = document.getElementById("convert");
+            const ruleValue = document.getElementById("rule");
 
             window.onload = calBtn.addEventListener("click", () => {
                 let date = document.getElementById("date").value;
                 let param = document.getElementById("parameter").value;
-                calculateDate(date, param);
+                console.log(ruleValue.value, convertBtn.checked);
+                document.getElementById("dateResult").value = calculateDate(
+                    date,
+                    param,
+                    ruleValue.value === "roc" ? "0" : "1",
+                    convertBtn.checked ? "1" : "0"
+                );
             });
-
-            function calculateDate(date, param) {
-                let mode = String(param.substring(0, 1));
-                let varibable = Number(param.substring(1));
-                let calYearROC = Number(
-                    date.substring(0, Number(date.length) - 4)
-                );
-                let calYear = calYearROC + 1911;
-                let calMonth = Number(
-                    date.substring(
-                        Number(date.length) - 4,
-                        Number(date.length) - 2
-                    )
-                );
-                let calDay = Number(
-                    date.substring(Number(date.length) - 2, Number(date.length))
-                );
-                // console.log(calYear + "/" + calMonth + "/" + calDay);
-                let normalDays = [
-                    31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31,
-                ];
-                let leapDays = [31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
-
-                let isLeapYear = isLeapYearFunc(calYear);
-
-                let currentYearDays = isLeapYear ? leapDays : normalDays;
-
-                if (
-                    calDay < 1 ||
-                    calDay > currentYearDays[calMonth - 1] ||
-                    calMonth < 1 ||
-                    calMonth > 12 ||
-                    date.length < 4
-                ) {
-                    console.log("ERR");
-                    return;
-                }
-                if (mode === "+") {
-                    calDay = calDay + varibable;
-                    while (calDay > currentYearDays[calMonth - 1]) {
-                        calDay = calDay - currentYearDays[calMonth - 1];
-                        calMonth++;
-                        if (calMonth > 12) {
-                            calMonth = 1;
-                            calYear++;
-                            isLeapYear = isLeapYearFunc(calYear);
-                            currentYearDays = isLeapYear
-                                ? leapDays
-                                : normalDays;
-                        }
-                    }
-                    console.log(calYear - 1911 + "/" + calMonth + "/" + calDay);
-                }
-            }
-
-            function isLeapYearFunc(year) {
-                let result =
-                    year % 4 === 0
-                        ? year % 100 === 0
-                            ? year % 400 === 0
-                                ? true
-                                : false
-                            : true
-                        : false;
-                return result;
-            }
         </script>
     </body>
 </html>
