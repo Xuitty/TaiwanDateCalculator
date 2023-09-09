@@ -8,7 +8,7 @@
  */
 
 function calculateDate(date, param, inputMode, outputMode) {
-    console.log(date, param, inputMode, outputMode);
+    // console.log(date, param, inputMode, outputMode);
     let mode = String(param.substring(0, 1));
     let varibable = Number(param.substring(1));
     let calYearRaw = Number(date.substring(0, Number(date.length) - 4));
@@ -81,29 +81,22 @@ function calculateDate(date, param, inputMode, outputMode) {
             currentYearDays = isLeapYear ? leapDays : normalDays;
         }
     }
-    if (outputMode === "0") {
-        dateResult =
-            String(calYear) +
-            String(calMonth).padStart(2, "0") +
-            String(calDay).padStart(2, "0");
-        return dateResult;
-    }
-
-    if (inputMode === "0") {
-        dateResult =
-            String(calYear + 1911) +
-            String(calMonth).padStart(2, "0") +
-            String(calDay).padStart(2, "0");
-        return dateResult;
-    }
-
-    if (inputMode === "1") {
+    if (
+        (inputMode === "0" && outputMode === "0") ||
+        (inputMode === "1" && outputMode === "1")
+    ) {
         dateResult =
             String(calYear - 1911) +
             String(calMonth).padStart(2, "0") +
             String(calDay).padStart(2, "0");
         return dateResult;
     }
+
+    dateResult =
+        String(calYear) +
+        String(calMonth).padStart(2, "0") +
+        String(calDay).padStart(2, "0");
+    return dateResult;
 }
 
 function isLeapYearFunc(year) {
