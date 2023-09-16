@@ -13,12 +13,18 @@
                 <option value="roc" label="民國"></option>
                 <option value="ad" label="西元"></option>
             </select>
-            <input type="text" id="date" value="1101231" /> 轉換
-            <input type="checkbox" id="convert" />
+            <input type="text" id="date" value="1101231" />
+            <label style="margin-left: 20px" for="convert">民國西元互轉</label>
+            <input type="checkbox" id="convert" checked disabled />
         </div>
         <br />
         <div>
-            <span>變數: </span><input type="text" id="parameter" value="+5" />
+            <span>變數(e.g. : +5, -1, +10...): </span
+            ><input type="text" id="parameter" value="" disabled />
+            <label style="margin-left: 20px" for="zeroParameter"
+                >日期純轉換</label
+            >
+            <input type="checkbox" id="zeroParameter" checked />
         </div>
         <br />
         <div><span>結果: </span><input type="text" id="dateResult" /></div>
@@ -26,20 +32,35 @@
         <input id="calculate" type="button" value="計算" />
 
         <script>
+            const paramInput = document.getElementById("parameter");
             const calBtn = document.getElementById("calculate");
             const convertBtn = document.getElementById("convert");
             const ruleValue = document.getElementById("rule");
+            const zeroParameter = document.getElementById("zeroParameter");
 
-            window.onload = calBtn.addEventListener("click", () => {
+            calBtn.addEventListener("click", () => {
                 let date = document.getElementById("date").value;
                 let param = document.getElementById("parameter").value;
-                console.log(ruleValue.value, convertBtn.checked);
+                // console.log(ruleValue.value, convertBtn.checked);
                 document.getElementById("dateResult").value = calculateDate(
                     date,
                     param,
                     ruleValue.value === "roc" ? "0" : "1",
                     convertBtn.checked ? "1" : "0"
                 );
+            });
+            zeroParameter.addEventListener("click", () => {
+                if (zeroParameter.checked) {
+                    paramInput.value = "";
+                    paramInput.disabled = true;
+                    convertBtn.disabled = true;
+                    convertBtn.checked = true;
+                } else {
+                    paramInput.value = "+5";
+                    paramInput.disabled = false;
+                    convertBtn.disabled = false;
+                    convertBtn.checked = false;
+                }
             });
         </script>
     </body>

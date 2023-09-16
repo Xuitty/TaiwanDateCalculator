@@ -9,8 +9,8 @@
 
 function calculateDate(date, param, inputMode, outputMode) {
     // console.log(date, param, inputMode, outputMode);
-    let mode = String(param.substring(0, 1));
-    let varibable = Number(param.substring(1));
+    let mode;
+    let varibable;
     let calYearRaw = Number(date.substring(0, Number(date.length) - 4));
     let calYear = inputMode === "0" ? calYearRaw + 1911 : calYearRaw;
     let calMonth = Number(
@@ -25,6 +25,13 @@ function calculateDate(date, param, inputMode, outputMode) {
     let isLeapYear = isLeapYearFunc(calYear);
     let currentYearDays = isLeapYear ? leapDays : normalDays;
     let dateResult = "ERR";
+    if (param === "") {
+        mode = "+";
+        varibable = 0;
+    } else {
+        mode = String(param.substring(0, 1));
+        varibable = Number(param.substring(1));
+    }
 
     if (
         calDay < 1 ||
